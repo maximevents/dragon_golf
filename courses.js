@@ -1,34 +1,40 @@
-// Include jQuery directly within the courses.js file
+// Include jQuery directly within the clubs.js file
 var script = document.createElement('script');
 script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js';
 script.onload = function() {
     // Once jQuery is loaded, execute the rest of the script
     $(document).ready(function() {
 
-        // Function to create and display course cards
-        function displayCourse(course) {
+        // Function to create and display club cards
+        function displayClub(club) {
             // Create card element
             var card = document.createElement('div');
-            card.className = 'course-card';
+            card.className = 'club-card';
 
-            // Create title element
-            var title = document.createElement('h3');
-            title.textContent = course.title;
-            card.appendChild(title);
+            // Create image element
+            var image = document.createElement('img');
+            image.src = club.featuredImageURL;
+            image.className = 'club-image';
+            card.appendChild(image);
 
-            // Create description element
-            var description = document.createElement('p');
-            description.textContent = course.description;
-            card.appendChild(description);
+            // Create name element
+            var name = document.createElement('h3');
+            name.textContent = club.name;
+            card.appendChild(name);
 
-            // Append card to the courses container
-            var coursesContainer = document.getElementById('courses-container');
-            coursesContainer.appendChild(card);
+            // Create country name element
+            var countryName = document.createElement('p');
+            countryName.textContent = club.countryName;
+            card.appendChild(countryName);
+
+            // Append card to the clubs container
+            var clubsContainer = document.getElementById('courses-container');
+            clubsContainer.appendChild(card);
         }
 
-        // CSS styles for course cards
-        var courseStyles = `
-            /* Course container styles */
+        // CSS styles for club cards
+        var clubStyles = `
+            /* Club container styles */
             #courses-container {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -36,8 +42,8 @@ script.onload = function() {
                 padding: 16px;
             }
 
-            /* Course card styles */
-            .course-card {
+            /* Club card styles */
+            .club-card {
                 padding: 16px;
                 background-color: #f8f8f8;
                 border-radius: 8px;
@@ -45,17 +51,24 @@ script.onload = function() {
                 transition: transform 0.2s;
             }
 
-            .course-card:hover {
+            .club-card:hover {
                 transform: translateY(-4px);
             }
 
-            .course-card h3 {
+            .club-card img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin-bottom: 12px;
+            }
+
+            .club-card h3 {
                 margin-top: 0;
                 margin-bottom: 8px;
                 font-size: 1.25rem;
             }
 
-            .course-card p {
+            .club-card p {
                 margin: 0;
                 font-size: 1rem;
                 color: #666;
@@ -64,29 +77,29 @@ script.onload = function() {
 
         // Create a <style> element and append CSS styles to it
         var styleElement = document.createElement('style');
-        styleElement.textContent = courseStyles;
+        styleElement.textContent = clubStyles;
 
         // Append the <style> element to the document's <head>
         document.head.appendChild(styleElement);
 
-        // Function to fetch courses from Firestore using a Cloud Function
-        function fetchCourses() {
+        // Function to fetch clubs from Firestore using a Cloud Function
+        function fetchClubs() {
             $.ajax({
-                url: 'https://asia-southeast1-your-project-id.cloudfunctions.net/getCourses', // Update with your Cloud Function URL
+                url: 'https://asia-southeast1-dragon-golf-international.cloudfunctions.net/getCourses', // Update with your Cloud Function URL
                 method: 'GET',
                 success: function(data) {
-                    data.forEach(course => {
-                        displayCourse(course);
+                    data.forEach(club => {
+                        displayClub(club);
                     });
                 },
                 error: function(error) {
-                    console.error('Error fetching courses:', error);
+                    console.error('Error fetching clubs:', error);
                 }
             });
         }
 
-        // Fetch courses on document ready
-        fetchCourses();
+        // Fetch clubs on document ready
+        fetchClubs();
     });
 };
 document.head.appendChild(script);
